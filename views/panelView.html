@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="appEstacion.css">
+	<title>Document</title>
+	<script src="https://kit.fontawesome.com/24fdf5f9f5.js" crossorigin="anonymous"></script>
+</head>
+<body>
+	<template id="tpl__boton">
+		<div class="boton">
+			<div class="boton_apodo"></div>
+			<div class="boton_ubicacion"></div>
+			<div class="boton_visitas"></div>
+		</div>
+	</template>
+	
+
+	<div id="listado"></div>
+
+	<script type="text/javascript">
+		getEstaciones().then(data => {
+			data.forEach(row => {
+				createboton(row);
+			});
+		});
+
+		async function getEstaciones() {
+			const response = await fetch("index.php");
+			const data = await response.json();
+			return data;
+		}
+
+		function createboton(info) {
+			const tpl = document.getElementById("tpl__boton").content;
+			const clon = tpl.cloneNode(true);
+
+			clon.querySelector(".boton_apodo").textContent = info.apodo; // Mostrar el apodo
+			clon.querySelector(".boton_ubicacion").textContent = info.ubicacion; // Mostrar la ubicación
+			clon.querySelector(".boton_visitas").textContent = info.visitas; // Mostrar las visitas
+
+			document.getElementById("listado").appendChild(clon);
+		}
+	</script>
+</body>
+</html>
